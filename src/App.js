@@ -1,67 +1,83 @@
-import logo from "./logo.svg"
-import "./App.css"
-import Poem from "./Components/Poem"
-import Art from "./Components/Art"
-import React, { useState, useEffect, useRef } from "react"
+import logo from "./logo.svg";
+import "./App.css";
+import Poem from "./Components/Poem";
+import Art from "./Components/Art";
+import React, { useState, useEffect, useRef } from "react";
+import artbotlogo from "./images/artbot logo.png";
+import { AiFillAliwangwang } from "react-icons/ai";
 
 function App() {
-  // incrementing counter triggers children to refresh
-  const [refreshCounter, setRefreshCounter] = useState(0)
-  const [remainingMs, setRemainingMs] = useState(0)
-  const nextTickRef = useRef(0)
+    // incrementing counter triggers children to refresh
+    const [refreshCounter, setRefreshCounter] = useState(0);
+    const [remainingMs, setRemainingMs] = useState(0);
+    const nextTickRef = useRef(0);
 
-  // interval length (ms). use 10000 (10s) for testing, set to 600000 for 10min.
-  const ms = 60000 * 10
+    // interval length (ms). use 10000 (10s) for testing, set to 600000 for 10min.
+    const ms = 60000 * 10;
 
-  useEffect(() => {
-    // initial tick setup
-    setRefreshCounter((c) => c + 1)
-    nextTickRef.current = Date.now() + ms
-    setRemainingMs(ms)
+    useEffect(() => {
+        // initial tick setup
+        setRefreshCounter((c) => c + 1);
+        nextTickRef.current = Date.now() + ms;
+        setRemainingMs(ms);
 
-    const refreshInterval = setInterval(() => {
-      setRefreshCounter((c) => c + 1)
-      // schedule next tick
-      nextTickRef.current = Date.now() + ms
-      setRemainingMs(ms)
-    }, ms)
+        const refreshInterval = setInterval(() => {
+            setRefreshCounter((c) => c + 1);
+            // schedule next tick
+            nextTickRef.current = Date.now() + ms;
+            setRemainingMs(ms);
+        }, ms);
 
-    // update remaining time every 250ms (or 1000ms)
-    const countdownInterval = setInterval(() => {
-      setRemainingMs(Math.max(0, nextTickRef.current - Date.now()))
-    }, 250)
+        // update remaining time every 250ms (or 1000ms)
+        const countdownInterval = setInterval(() => {
+            setRemainingMs(Math.max(0, nextTickRef.current - Date.now()));
+        }, 250);
 
-    return () => {
-      clearInterval(refreshInterval)
-      clearInterval(countdownInterval)
-    }
-  }, []) // run once on mount
+        return () => {
+            clearInterval(refreshInterval);
+            clearInterval(countdownInterval);
+        };
+    }, []); // run once on mount
 
-  const handleRandomizeClick = (e) => {
-    e.preventDefault()
-    setRefreshCounter((c) => c + 1)
-    // schedule next tick
-    nextTickRef.current = Date.now() + ms
-    setRemainingMs(ms)
-  }
+    const handleRandomizeClick = (e) => {
+        e.preventDefault();
+        setRefreshCounter((c) => c + 1);
+        // schedule next tick
+        nextTickRef.current = Date.now() + ms;
+        setRemainingMs(ms);
+    };
 
-  // format minutes:seconds
-  const minutes = Math.floor(remainingMs / 60000)
-  const seconds = Math.floor((remainingMs % 60000) / 1000)
-  const timeString = `${minutes}:${String(seconds).padStart(2, "0")}`
+    // format minutes:seconds
+    const minutes = Math.floor(remainingMs / 60000);
+    const seconds = Math.floor((remainingMs % 60000) / 1000);
+    const timeString = `${minutes}:${String(seconds).padStart(2, "0")}`;
 
-  return (
-    <div className="pagecontainer">
-      <div className="timer">
-        Next refresh in: {timeString}{" "}
-        <div className="randomizeButton" onClick={handleRandomizeClick}></div>
-      </div>
-      <div className="contentcontainer">
-        <Art refresh={refreshCounter} />
-        <Poem refresh={refreshCounter} />
-      </div>
-    </div>
-  )
+    return (
+        <div className="App">
+            <div className="top"></div>
+            <div className="pagecontainer">
+                <div className="header">
+                    <div className="logoAndText">
+                        <img className="logo" src={artbotlogo} />
+                        <div className="logoText">by dogamedia</div>
+                    </div>
+                    <div className="timer">
+                        Next refresh in:{" "}
+                        <span className="timeString">{timeString} </span>
+                        <AiFillAliwangwang
+                            className="randomizeButton"
+                            onClick={handleRandomizeClick}
+                        />
+                    </div>
+                </div>
+                <div className="contentcontainer">
+                    <Art refresh={refreshCounter} />
+                    <Poem refresh={refreshCounter} />
+                </div>
+            </div>
+            <div className="bottom"></div>
+        </div>
+    );
 }
 
-export default App
+export default App;

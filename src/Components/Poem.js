@@ -1,5 +1,6 @@
 import React, { useState, useEffect, useRef } from "react";
 import poets from "./Helpers/poets.json";
+import { FcGoogle } from "react-icons/fc";
 
 export default function Poem({ refresh }) {
     //prevents useEffect from running twice in StrictMode
@@ -84,6 +85,18 @@ export default function Poem({ refresh }) {
             <div class="poem">
                 <div class="poemtitle">{poemTitle}</div>
                 <div class="poemauthor">{author}</div>
+                <FcGoogle
+                    className="googlePoet"
+                    onClick={() => {
+                        if (!author) return;
+                        window.open(
+                            `https://www.google.com/search?q=${encodeURIComponent(
+                                author
+                            )}`,
+                            "_blank"
+                        );
+                    }}
+                />
                 <div
                     class="poemtext"
                     style={{ whiteSpace: "pre-wrap", marginTop: "1em" }}
