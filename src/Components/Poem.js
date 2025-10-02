@@ -1,93 +1,97 @@
-import React, { useState, useEffect, useRef } from "react"
-import poets from "./Helpers/poets.json"
+import React, { useState, useEffect, useRef } from "react";
+import poets from "./Helpers/poets.json";
 
 export default function Poem({ refresh }) {
-  //prevents useEffect from running twice in StrictMode
-  const didMountRef = useRef(false)
+    //prevents useEffect from running twice in StrictMode
+    const didMountRef = useRef(false);
 
-  const [author, setAuthor] = useState("")
-  const [poemTitle, setPoemTitle] = useState("")
-  const [lines, setLines] = useState()
+    const [author, setAuthor] = useState("");
+    const [poemTitle, setPoemTitle] = useState("");
+    const [lines, setLines] = useState();
 
-  const poetsJson = poets
+    const poetsJson = poets;
 
-  // run on mount and whenever `refresh` changes
-  useEffect(() => {
-    // avoid double-call from StrictMode during dev mount
-    if (didMountRef.current) {
-      // normal refresh (after first real mount)
-      fetchPoemsAndPoem()
-      return
-    }
-    didMountRef.current = true
-    fetchPoemsAndPoem()
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [refresh])
+    // run on mount and whenever `refresh` changes
+    useEffect(() => {
+        // avoid double-call from StrictMode during dev mount
+        if (didMountRef.current) {
+            // normal refresh (after first real mount)
+            fetchPoemsAndPoem();
+            return;
+        }
+        didMountRef.current = true;
+        fetchPoemsAndPoem();
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [refresh]);
 
-  const fetchPoemsAndPoem = async () => {
-    //get random poet name from poetsJson
-    const randomPoet =
-      poetsJson.authors[Math.floor(Math.random() * poetsJson.authors.length)]
-    console.log("random poet: " + randomPoet)
-    setAuthor(randomPoet)
-    try {
-      //get random poet's poem titles to use in next fetch
-      const response = await fetch(
-        `https://poetrydb.org/author/${randomPoet}/title`
-      )
-      if (!response.ok) {
-        throw new Error(`HTTP error! status: ${response.status}`)
-      }
-      const titles = await response.json()
-      console.log(titles)
-      const randomPoem = titles[Math.floor(Math.random() * titles.length)]
-      console.log("random poem title: " + randomPoem.title)
-      setPoemTitle(randomPoem.title)
+    const fetchPoemsAndPoem = async () => {
+        //get random poet name from poetsJson
+        const randomPoet =
+            poetsJson.authors[
+                Math.floor(Math.random() * poetsJson.authors.length)
+            ];
+        console.log("random poet: " + randomPoet);
+        setAuthor(randomPoet);
+        try {
+            //get random poet's poem titles to use in next fetch
+            const response = await fetch(
+                `https://poetrydb.org/author/${randomPoet}/title`
+            );
+            if (!response.ok) {
+                throw new Error(`HTTP error! status: ${response.status}`);
+            }
+            const titles = await response.json();
+            console.log(titles);
+            const randomPoem =
+                titles[Math.floor(Math.random() * titles.length)];
+            console.log("random poem title: " + randomPoem.title);
+            setPoemTitle(randomPoem.title);
 
-      //fetch random poem by title
-      fetchRandomPoem(randomPoem)
-    } catch (error) {
-      console.log("fetching author's poems failed")
-      console.log(error)
-    }
-  }
+            //fetch random poem by title
+            fetchRandomPoem(randomPoem);
+        } catch (error) {
+            console.log("fetching author's poems failed");
+            console.log(error);
+        }
+    };
 
-  const fetchRandomPoem = async (randomPoem) => {
-    console.log("fetching random poem from author's poems:")
-    try {
-      const res = await fetch("https://poetrydb.org/title/" + randomPoem.title)
-      if (!res.ok) {
-        throw new Error(`HTTP error! status: ${res.status}`)
-      }
-      const poem = await res.json()
-      console.log(poem)
-      setLines(poem[0].lines.join("\n"))
-    } catch (error) {
-      console.log("fetching poem failed")
-      console.log(error)
-    }
-  }
+    const fetchRandomPoem = async (randomPoem) => {
+        console.log("fetching random poem from author's poems:");
+        try {
+            const res = await fetch(
+                "https://poetrydb.org/title/" + randomPoem.title
+            );
+            if (!res.ok) {
+                throw new Error(`HTTP error! status: ${res.status}`);
+            }
+            const poem = await res.json();
+            console.log(poem);
+            setLines(poem[0].lines.join("\n"));
+        } catch (error) {
+            console.log("fetching poem failed");
+            console.log(error);
+        }
+    };
 
-  // Handle form submit
-  const handleSubmit = (e) => {
-    e.preventDefault()
-    fetchPoemsAndPoem()
-  }
+    // Handle form submit
+    const handleSubmit = (e) => {
+        e.preventDefault();
+        fetchPoemsAndPoem();
+    };
 
-  return (
-    <div class="poemgrid">
-      <div class="poem">
-        <button onClick={fetchPoemsAndPoem}>New Random Author and Poem</button>
-        <div class="poemtitle">{poemTitle}</div>
-        <div class="poemauthor">{author}</div>
-        <div
-          class="poemtext"
-          style={{ whiteSpace: "pre-wrap", marginTop: "1em" }}
-        >
-          {lines}
+    return (
+        <div class="poemgrid">
+            <div class="poem">
+                <div class="poemtitle">{poemTitle}</div>
+                <div class="poemauthor">{author}</div>
+                <div
+                    class="poemtext"
+                    style={{ whiteSpace: "pre-wrap", marginTop: "1em" }}
+                >
+                    {lines}
+                </div>
+            </div>
+            <div class="poembar"></div>
         </div>
-      </div>
-      <div class="poembar"></div>
-    </div>
-  )
+    );
 }
