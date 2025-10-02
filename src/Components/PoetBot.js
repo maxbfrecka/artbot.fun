@@ -11,11 +11,12 @@ export default function PoetBot({ title, poet, lines }) {
     const [loading, setLoading] = useState(false);
 
     useEffect(() => {
-        // avoid double-call from StrictMode during dev mount
-        if (didMountRef.current) {
+        if (!didMountRef.current) {
+            // First mount — just mark as mounted, don’t reset
+            didMountRef.current = true;
             return;
         }
-        didMountRef.current = true;
+        // Runs on later changes to title/poet/lines
         setPoetBotResponse(null);
     }, [title, poet, lines]);
 
