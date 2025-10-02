@@ -1,6 +1,7 @@
 import React, { useState, useEffect, useRef } from "react";
 import poets from "./Helpers/poets.json";
 import { FcGoogle } from "react-icons/fc";
+import PoetBot from "./PoetBot";
 
 export default function Poem({ refresh }) {
     //prevents useEffect from running twice in StrictMode
@@ -8,7 +9,7 @@ export default function Poem({ refresh }) {
 
     const [author, setAuthor] = useState("");
     const [poemTitle, setPoemTitle] = useState("");
-    const [lines, setLines] = useState();
+    const [lines, setLines] = useState(null);
 
     const poetsJson = poets;
 
@@ -102,6 +103,14 @@ export default function Poem({ refresh }) {
                     style={{ whiteSpace: "pre-wrap", marginTop: "1em" }}
                 >
                     {lines}
+
+                    {lines ? (
+                        <PoetBot
+                            title={poemTitle}
+                            poet={author}
+                            lines={lines}
+                        />
+                    ) : null}
                 </div>
             </div>
             <div class="poembar"></div>
