@@ -1,38 +1,109 @@
-.App {
-  text-align: center;
+.pagecontainer {
+  background-color: #c3ccb9;
+  padding: 100px;
 }
 
-.App-logo {
-  height: 40vmin;
-  pointer-events: none;
+.contentcontainer {
+  height: 100%;
+  display: grid;
+  grid-template-columns: 20% 20% 20% 20% 20%;
+  grid-template-rows: 20% 20% 20% 20% 20%;
+  background-color: #d9e80e;
 }
 
-@media (prefers-reduced-motion: no-preference) {
-  .App-logo {
-    animation: App-logo-spin infinite 20s linear;
+.timer {
+  display: inline-block;
+  font-size: 7px;
+}
+
+.randomizeButton {
+  display: inline-block;
+  background-color: #c3ccb9;
+  width: 7px;
+  height: 7px;
+  cursor: pointer;
+  animation: rainbow 3s linear infinite;
+}
+/* reduce motion preference — stop animation for accessibility */
+/* @media (prefers-reduced-motion: reduce) {
+  .pagecontainer {
+    animation: none;
+    background-position: 50% 50%;
+  }
+} */
+/* animate background position to create the rainbow movement */
+@keyframes rainbow {
+  0% {
+    background-color: #eded8a;
+  }
+  50% {
+    background-color: #ff2200;
+  }
+  100% {
+    background-color: #00c8ff;
   }
 }
 
-.App-header {
-  background-color: #282c34;
-  min-height: 100vh;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  font-size: calc(10px + 2vmin);
-  color: white;
+.artcontainer {
+  grid-column-start: 1;
+  grid-column-end: 4;
+  background-color: rgb(242 229 239);
+  grid-row: 1/6;
 }
 
-.App-link {
-  color: #61dafb;
+.artimage {
+  max-width: 100%;
 }
 
-@keyframes App-logo-spin {
-  from {
-    transform: rotate(0deg);
-  }
-  to {
-    transform: rotate(360deg);
-  }
+.artTitle {
+  font-family: arial, sans-serif;
+  font-size: 1.5rem;
+  font-weight: bold;
+}
+.artistName {
+  font-family: arial, sans-serif;
+  font-size: 1.2rem;
+  font-style: italic;
+}
+
+.poemgrid {
+  grid-column: 4/6;
+  grid-row: 1/6;
+  display: grid;
+  grid-template-columns: repeat(100, 1fr);
+  grid-template-rows: repeat(100, 1fr);
+}
+
+.poem {
+  font-family: arial, sans-serif;
+  padding: 20px;
+  grid-column: 1/91;
+  background-color: #eded8a;
+  grid-row: 1/101;
+  font-size: clamp(0.5rem, 1vw, 2rem);
+}
+
+.poemtitle {
+  font-size: 20px;
+  font-weight: bold;
+  font-style: bold;
+}
+
+.poemauthor {
+  font-style: italic;
+  margin-bottom: 1em;
+}
+
+.poemtext {
+}
+
+.poembar {
+  background-color: rgb(0, 0, 0);
+  grid-column: 91/101;
+  grid-row: 1/101;
+}
+
+.vertical-text {
+  writing-mode: vertical-rl;
+  text-orientation: mixed;
 }
