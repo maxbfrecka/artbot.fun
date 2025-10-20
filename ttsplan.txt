@@ -16,4 +16,4 @@ resets on page refresh or new poem (msut remove /reset all variables)
 click read - makes request (loading)
 when loading is done, triggers start reading
 if audio playing, displays stop playing icon
-else goes back
+else goes back.
