@@ -1,0 +1,19 @@
+need to think out flow of TTS feature:
+
+user clicks audio button
+sends http request containing poem lines
+displays loading bar
+on receipt of response, fires function to play text
+for now thats just browser TTS for chrome.
+can also be a second HTTP request to TTS or built into lambda function
+loading bar is removed, displays audio STOP icon until audio stops playing
+if presses play again will have another behavior
+resets on page refresh or new poem (msut remove /reset all variables)
+
+
+
+
+click read - makes request (loading)
+when loading is done, triggers start reading
+if audio playing, displays stop playing icon
+else goes back
