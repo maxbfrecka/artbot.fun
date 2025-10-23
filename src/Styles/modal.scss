@@ -1,0 +1,42 @@
+.modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  //gradient background
+  background: linear-gradient(135deg, rgb(209, 25, 25), rgba(47, 255, 0, 0.8));
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  //mix-blend-mode: screen;
+  z-index: 999;
+}
+
+.modal-content {
+  background: rgb(255, 0, 0);
+  color: rgb(0, 0, 0);
+  font-family: "Avenir", sans-serif;
+  border: #0f84c8 20px solid;
+  border-radius: 40px;
+  padding: 2rem;
+  max-width: 500px;
+  text-align: center;
+  box-shadow: 0 0 20px rgba(0, 0, 0, 0.25);
+  z-index: 1000;
+
+  button {
+    margin-top: 1rem;
+    background: #0078ff;
+    border: none;
+    color: rgb(0, 0, 0);
+    padding: 0.5rem 1.2rem;
+    border-radius: 6px;
+    z-index: 1001;
+    cursor: pointer;
+    font-size: 1rem;
+    &:hover {
+      background: #005fcc;
+    }
+  }
+}

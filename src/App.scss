@@ -355,6 +355,19 @@ body {
   /* max-height: 30vh; */
 }
 
+.readAnalysis {
+  font-size: 20px;
+  color: red;
+  padding-right: 10px;
+  cursor: pointer;
+}
+.stopReadingAnalysis {
+  font-size: 20px;
+  color: rgb(255, 0, 0);
+  padding-right: 10px;
+  cursor: pointer;
+}
+
 /* Phone override */
 @media (max-width: 768px) {
   .pagecontainer {
