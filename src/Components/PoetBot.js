@@ -71,8 +71,8 @@ export default function PoetBot({ title, poet, lines }) {
       const utterance = new SpeechSynthesisUtterance(analysisText)
       utterance.voice =
         googleVoice || voices.find((v) => v.default) || voices[0]
-      utterance.rate = 1.2
-      utterance.pitch = 1.1
+      utterance.rate = 1.1
+      utterance.pitch = 1.0
       utterance.volume = 1
       window.speechSynthesis.cancel()
       window.speechSynthesis.speak(utterance)

@@ -75,6 +75,10 @@ function App() {
               browsers.
               <br />
               <br />
+              Audio generation may take several minutes depending on poem
+              length.
+              <br />
+              <br />
               Generating audio for longer poems is not recommended. <br />
               <br />
               Use the PoetBot icon beneath the poem for poetry analysis. <br />
