@@ -5,6 +5,8 @@ import Art from "./Components/Art"
 import React, { useState, useEffect, useRef } from "react"
 import artbotlogo from "./images/artbot logo.png"
 import { AiFillAliwangwang } from "react-icons/ai"
+import { FaPauseCircle } from "react-icons/fa"
+
 import "./Styles/modal.scss"
 
 function App() {
@@ -13,32 +15,52 @@ function App() {
   const [refreshCounter, setRefreshCounter] = useState(0)
   const [remainingMs, setRemainingMs] = useState(0)
   const nextTickRef = useRef(0)
+  const [paused, setPaused] = useState(false)
+  const pausedRef = useRef(false) // 👈 new
 
-  // interval length (ms). use 10000 (10s) for testing, set to 600000 for 10min.
-  const ms = 60000 * 10
-
+  // MODAL LOGIC
   useEffect(() => {
-    // Check if user has seen modal yet
     const hasVisited = localStorage.getItem("hasVisited")
     if (!hasVisited) {
       setShowModal(true)
       localStorage.setItem("hasVisited", "true")
     }
+  }, []) // run once on mount
 
-    // initial tick setup
-    setRefreshCounter((c) => c + 1)
+  // TIMER LOGIC
+  // interval length (ms). use 10000 (10s) for testing, set to 600000 for 10min.
+  const ms = 60000 * 10
+  // keep pausedRef in sync with state
+  useEffect(() => {
+    pausedRef.current = paused
+  }, [paused])
+
+  useEffect(() => {
+    let pauseStart = null
+
     nextTickRef.current = Date.now() + ms
     setRemainingMs(ms)
+    setRefreshCounter((c) => c + 1)
 
     const refreshInterval = setInterval(() => {
+      if (pausedRef.current) return // 👈 use ref instead of state
       setRefreshCounter((c) => c + 1)
-      // schedule next tick
       nextTickRef.current = Date.now() + ms
       setRemainingMs(ms)
     }, ms)
 
-    // update remaining time every 250ms (or 1000ms)
     const countdownInterval = setInterval(() => {
+      if (pausedRef.current) {
+        if (!pauseStart) pauseStart = Date.now()
+        return
+      }
+
+      if (pauseStart) {
+        // shift nextTick by pause duration
+        nextTickRef.current += Date.now() - pauseStart
+        pauseStart = null
+      }
+
       setRemainingMs(Math.max(0, nextTickRef.current - Date.now()))
     }, 250)
 
@@ -46,8 +68,7 @@ function App() {
       clearInterval(refreshInterval)
       clearInterval(countdownInterval)
     }
-  }, []) // run once on mount
-
+  }, [ms])
   const handleRandomizeClick = (e) => {
     e.preventDefault()
     setRefreshCounter((c) => c + 1)
@@ -101,7 +122,12 @@ function App() {
               <div className="logoText">by dogamedia</div>
             </div>
             <div className="timer">
-              Next refresh in: <span className="timeString">{timeString} </span>
+              Next refresh in:{" "}
+              <FaPauseCircle
+                className="pauseButton"
+                onClick={() => setPaused(!paused)}
+              />
+              <span className="timeString">{timeString} </span>
               <AiFillAliwangwang
                 className="randomizeButton"
                 onClick={handleRandomizeClick}
